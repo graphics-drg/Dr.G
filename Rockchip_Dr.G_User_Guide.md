@@ -171,7 +171,22 @@
 
   * `dr-g -io-qos get`
 
-- 获取总线优先级，并打印出对应的name表格。
+- 获取总线优先级，并打印出对应的name表格:
+
+```
+rk3326_mid:/ # dr-g -io-qos get
+io_qos get...
+set cmds: dr-g -io-qos set [io_num] [pri_num]
+    demo: dr-g -io-qos set 4 1
+    demo: dr-g -io-qos set 0 0
+[io_num]:            NAME:  io_mem_addr: pri_num
+     [0]:         gpu_qos:   0xff520008:   1
+     [1]:          vop_m0:   0xff550108:   3
+     [2]:          vop_m1:   0xff550188:   3
+     [3]:        rga_rd_m:   0xff550008:   1
+     [4]:        rga_wr_m:   0xff550088:   1
+     [5]:         cpu_qos:   0xff508008:   1
+```
 
   * `dr-g -io-qos set <io_num> <pri_num>`
 
@@ -185,11 +200,32 @@
 
   * `dr-g -vol get`
 
-- 获取/d/regulator/ 下的所有vdd节点，并打印出对应的name表格。
+- 获取/d/regulator/ 下的所有vdd节点，并打印出如下对应的name表格。
+
+````
+rk3399_Android10:/ # dr-g -vol get
+============[0]============
+vdd_name:[ vdd_center ]
+voltage:
+900000 uV
+consumers:
+Device-Supply                      Min_uV   Max_uV  load_uA
+dmc-center                         900000  1350000        0
+vdd_center                              0        0        0
+============[1]============
+vdd_name:[ vdd_cpu_b ]
+voltage:
+1175000 uV
+consumers:
+Device-Supply                      Min_uV   Max_uV  load_uA
+cpu4-cpu                          1175000  1250000        0
+vdd_cpu_b                               0        0        0
+```
 
   * `dr-g -vol set <vdd_num> <voltage>`
 
 - 设置vdd_num 对应的vdd电压，按照提示内容。设置成功后会提示：" Voltage set success! "
+
 - Examples:
       dr-g -vol set 2 800000       设置get提示中序号为[2]的电压为 800000 uV 。
       dr-g -vol set 1 1000000       设置get提示中序号为[1]的电压为 1000000 uV 。
@@ -202,6 +238,7 @@
 
     检测到异常后，报错格式如下 :
 
+```
     ========================WARNING:3========================
     find_err:Failed to set damage region on surface
     advice:此报错多发生在安卓8.1系统，是hwui框架代码，在abandon之后，无返回直接报fatal导致的。可以参考redmine:189373
@@ -211,6 +248,7 @@
     find_err:beginning of crash
     advice:发现有Android Crash信息，可以搜索关键字：beginning of crash定位，查看堆栈
     ==========================END============================
+```
 
   * `dr-g -log-ans -f PATH`
 
@@ -230,6 +268,18 @@
   `dr-g -sys-set perf`
 
   该命令执行后，CPU，GPU，DDR 设置最高频率，温控关闭。回显打印设置后的各频率。
+
+```
+  rk3326_mid:/ # dr-g -sys-set perf
+  CPU0    freq=1.51 Ghz                   //CPU频率
+  GPU     freq=520 Mhz                    //GPU频率
+  DDR     freq=666 Mhz                    //DDR频率
+  GPU utilisation 0~100%:                 //GPU负载: 此时GPU负载为0
+  0
+  Temperature control :	                  //温控策略: 此时CPU0的温控策略为user_space
+  CPU0 :
+  user_space
+```
 
 * 获取当前状态
 
